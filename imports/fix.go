@@ -5,6 +5,7 @@
 package imports
 
 import (
+	"bufio"
 	"fmt"
 	"go/ast"
 	"go/build"
@@ -222,6 +223,11 @@ func loadPkg(wg *sync.WaitGroup, root, pkgrelpath string) {
 	importpath := filepath.ToSlash(pkgrelpath)
 	dir := filepath.Join(root, importpath)
 
+	// Ignore dires in .goignore
+	if _, ok := ignores[dir]; ok {
+		return
+	}
+
 	fsgate.enter()
 	defer fsgate.leave()
 	pkgDir, err := os.Open(dir)
@@ -384,4 +390,29 @@ func findImportStdlib(shortPkg string, symbols map[string]bool) (importPath stri
 		importPath = path
 	}
 	return importPath, false, importPath != ""
+}
+
+var ignores = loadGoIgnores()
+
+// loadGoIgnores reads the $GOPATH/.goignore file and populates a map
+// containing each line in the file. It tolerates any errors (e.g. no such
+// file), and returns the ignore map.
+func loadGoIgnores() map[string]struct{} {
+	ignores := make(map[string]struct{})
+	path := filepath.Join(os.Getenv("GOPATH"), ".goignore")
+	file, err := os.Open(path)
+	defer file.Close()
+	if err != nil {
+		return ignores
+	}
+
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		line := scanner.Text()
+		if len(line) > 0 {
+			ignores[line] = struct{}{}
+		}
+	}
+
+	return ignores
 }
