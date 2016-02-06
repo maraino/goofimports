@@ -17,7 +17,7 @@ import (
 	"runtime"
 	"strings"
 
-	"golang.org/x/tools/imports"
+	"github.com/maraino/goofimports/imports"
 )
 
 var (
