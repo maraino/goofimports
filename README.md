@@ -12,3 +12,12 @@ It basically makes goimports fast again.
 go get github.com/maraino/goofimports
 ```
 
+### Generate
+
+A script `generate.sh` is included which can generate an optimal `.goignore`
+file (all directories that do not contain `.go` files in their subdirectories).
+To use it to generate your `.goignore` file:
+
+```sh
+sh "$GOPATH/src/github.com/maraino/goofimports/generate.sh" | tee "$GOPATH/.goignore"
+```
