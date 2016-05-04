@@ -12,6 +12,11 @@ It basically makes goimports fast again.
 go get github.com/maraino/goofimports
 ```
 
+For older version of Go (1.5, ?) you can use:
+```sh
+go get gopkg.in/maraino/goofimports.v1
+```
+
 ### Generate
 
 A script `generate.sh` is included which can generate an optimal `.goignore`
