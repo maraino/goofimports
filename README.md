@@ -9,12 +9,7 @@ It basically makes goimports fast again.
 ### Install.
 
 ```sh
-go get github.com/maraino/goofimports
-```
-
-For older version of Go (1.5, ?) you can use:
-```sh
-go get gopkg.in/maraino/goofimports.v1
+go get -u github.com/maraino/goofimports
 ```
 
 ### Generate
